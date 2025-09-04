@@ -1,0 +1,65 @@
+# NASA POWER API Configuration File
+# Configuration for fetching daily weather data from NASA POWER API
+
+# Site Locations
+# Each site needs: POINTS (identifier), lat (latitude), long (longitude)
+DET:  # Detroit/Oregon area
+  POINTS: "140065"
+  lat: 44.69
+  long: -122.22
+
+JPP:  # Nashville/Tennessee area  
+  POINTS: "925084"
+  lat: 36.13
+  long: -86.58
+
+OOLO:  # Tulsa/Oklahoma area
+  POINTS: "728989"
+  lat: 36.53
+  long: -95.62
+
+# Time Period Configuration
+# Specify which years to download data for
+years: [2016, 2017, 2018, 2019, 2020]
+
+# Site Processing List
+# List which sites to process (must match site keys above)
+sites: ["DET", "JPP"]
+
+# Output Configuration
+output_directory: "nasa_power_data"  # Directory to save CSV files
+
+# NASA POWER API Settings
+api_settings:
+  community: "ag"  # Agriculture community (recommended for weather data)
+  temporal_api: "daily"  # Daily resolution
+  
+  # Weather Parameters to Fetch
+  # Each parameter includes both average and maximum daily values where available
+  parameters:
+    # Can be updated as per requiremets, check https://power.larc.nasa.gov/parameters/
+    # Temperature Parameters
+    # - "T2M"          # Air temperature at 2m (°C) - daily average
+    - "T2M_MAX"      # Air temperature at 2m (°C) - daily maximum
+    - "T2MDEW"       # Dewpoint temperature at 2m (°C) - daily average  
+    
+    # Solar Radiation Parameters
+    - "ALLSKY_SFC_SW_DWN"      # All sky surface shortwave downward irradiance (kWh/m²/day)
+    
+    # Wind Parameters  
+    # - "WS2M"        # Wind speed at 2m (m/s) - daily average
+    - "WS2M_MAX"    # Wind speed at 2m (m/s) - daily maximum
+    - "WD2M"        # Wind direction at 2m (degrees) - daily average
+    
+    # Cloud and Precipitation Parameters
+    - "CLOUD_AMT_DAY"    # Cloud amount day time(%) - daily average
+    - "PRECTOTCORR"      # Precipitation corrected (mm/day) - daily total
+
+# Additional Notes:
+# - NASA POWER uses -999 for missing data values (handled automatically by script)
+# - API has rate limits - script includes delays between requests
+# - Data resolution is 0.5° x 0.625° globally
+# - Some parameters may not be available for all locations/dates
+# - You can add more sites by following the same format as DET, JPP, OOLO
+# - To add more years, just extend the years list: [2016, 2017, 2018, 2019, 2020, 2021, 2022]
+# - To process only specific sites, modify the sites list: ["DET", "JPP"] for just those two
